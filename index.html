@@ -237,6 +237,7 @@
       0%,100%{transform: translateY(0)}
       50%{transform: translateY(18px)}
     }
+    <img src="photo.jpg" class="photoBig">
     .photoBig{
       width:100%;
       max-height:420px;
@@ -245,29 +246,6 @@
       border:1px solid rgba(255,255,255,.8);
       box-shadow: var(--shadow);
     }
-    .gallery{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:12px;
-    }
-    .gallery img{
-      width:100%;
-      aspect-ratio: 1/1;
-      object-fit:cover;
-      border-radius:18px;
-      border:1px solid rgba(0,0,0,.08);
-      box-shadow: 0 10px 24px rgba(0,0,0,.10);
-      transition: transform .18s ease;
-    }
-    .gallery img:hover{transform: translateY(-2px)}
-    blockquote{
-      margin:0;
-      padding:16px 16px;
-      border-left: 5px solid rgba(255,77,166,.55);
-      background: rgba(255,255,255,.55);
-      border-radius: 14px;
-      color: #3f3f4a;
-      font-weight:600;
     }
     .fadeIn{animation: fade .7s ease both}
     @keyframes fade{from{opacity:0;transform: translateY(10px)} to{opacity:1;transform:none}}
@@ -276,6 +254,8 @@
       .hero h1{font-size:28px}
       .memory{grid-template-columns: repeat(3, 1fr)}
     }
+    
+
   </style>
 </head>
 <body>
@@ -441,7 +421,7 @@ I’m proud of you, and I’m always cheering for you. 💐`,
   }
 
   // create stickers continuously
- let stickerInterval = setInterval(spawnSticker, 800);
+ window.stickerInterval = setInterval(spawnSticker, 800);
 
 
     /***************
@@ -735,6 +715,24 @@ I’m proud of you, and I’m always cheering for you. 💐`,
      * Pre-fill memory at start (hidden until step 3)
      ***************/
     initMemory();
+
+    //<!-- Stop floating stickers when final section appears -->
+
+  const finalSection = document.getElementById("finalSection");
+
+  if (finalSection) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          clearInterval(window.stickerInterval);
+          document.getElementById("floaters").innerHTML = "";
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(finalSection);
+  }
   </script>
 </body>
 </html>
