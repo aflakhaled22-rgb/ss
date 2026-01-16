@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unlock the Surprise ✨</title>
+  <style>
+ :root{
+      /* SKY BLUE background */
+      --sky1:#bfe9ff;
+      --sky2:#78d6ff;
+      --sky3:#4aa9ff;
+
+      .hint{
+  color:#22c55e;
+  font-weight:700;
+}
+
+
+      /* UI */
+      --card: rgba(4, 22, 56, 0.92);
+      --cardBorder: rgba(56,189,248,.35);
+      --text: #eaf6ff;
+      --muted: rgba(234,246,255,.78);
+
+      --accent:#2563eb;
+      --accent2:#38bdf8;
+
+      --ok:#22c55e;
+      --bad:#ef4444;
+
+      --shadow: 0 20px 60px rgba(0,0,0,.25);
+      --radius: 20px;
+    }
+
+    *{box-sizing:border-box}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 800px at 10% 10%, var(--bg2), transparent 60%),
+        radial-gradient(1200px 800px at 90% 20%, var(--bg1), transparent 60%),
+        linear-gradient(180deg, #fff, #fff8fd);
+      overflow-x:hidden;
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:18px}
+    .card{
+      background:var(--card);
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,.7);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+    .center{display:flex;align-items:center;justify-content:center}
+    .stack{display:grid;gap:14px}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    h1,h2,h3{margin:0}
+    p{margin:0;line-height:1.6;color:var(--muted)}
+    .pill{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:8px 12px;border-radius:999px;
+      background:linear-gradient(90deg, rgba(255,77,166,.15), rgba(124,58,237,.12));
+      border:1px solid rgba(255,77,166,.25);
+      font-weight:600;color:#3a2a3a;
+    }
+    .btn{
+      border:none;
+      padding:12px 14px;
+      border-radius:14px;
+      font-weight:700;
+      cursor:pointer;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color:white;
+      box-shadow: 0 12px 30px rgba(255,77,166,.25);
+      transform: translateY(0);
+      transition:.2s ease;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.secondary{
+      background: rgba(255,255,255,.65);
+      color: var(--text);
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow:none;
+    }
+    .input{
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.12);
+      background: rgba(255,255,255,.7);
+      font-size:16px;
+      outline:none;
+    }
+    .hint{font-size:13px;color:var(--muted)}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:12px;
+      border:1px dashed rgba(0,0,0,.18);
+      background: rgba(255,255,255,.55);
+      font-size:13px;
+    }
+
+    /* Cute floating hearts */
+    .floaters{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+    .heart{
+      position:absolute;
+      width:14px;height:14px;
+      background: rgba(255,77,166,.35);
+      transform: rotate(45deg);
+      border-radius: 3px;
+      animation: rise linear infinite;
+      filter: blur(.2px);
+    }
+    .heart:before,.heart:after{
+      content:"";
+      position:absolute;
+      width:14px;height:14px;
+      background: inherit;
+      border-radius:50%;
+    }
+    .heart:before{left:-7px;top:0}
+    .heart:after{left:0;top:-7px}
+    @keyframes rise{
+      from{transform: translateY(30vh) rotate(45deg); opacity:0}
+      10%{opacity:1}
+      to{transform: translateY(-120vh) rotate(45deg); opacity:0}
+    }
+
+    /* Stepper */
+    .steps{display:flex;gap:10px;flex-wrap:wrap}
+    .step{
+      flex:1;min-width:180px;
+      padding:12px;border-radius:16px;
+      border:1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.55);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .step strong{display:block}
+    .dot{
+      width:12px;height:12px;border-radius:50%;
+      background: rgba(0,0,0,.15);
+    }
+    .step.done .dot{background: var(--ok)}
+    .step.active{border-color: rgba(255,77,166,.35); box-shadow: 0 10px 24px rgba(255,77,166,.12)}
+    .msg{font-weight:700}
+    .msg.ok{color:var(--ok)}
+    .msg.bad{color:var(--bad)}
+
+    /* Puzzle grid */
+    .puzzle{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:8px;
+      max-width:420px;
+      margin:0 auto;
+      user-select:none;
+      touch-action: manipulation;
+    }
+    .tile{
+      aspect-ratio: 1/1;
+      border-radius:16px;
+      border:1px solid rgba(0,0,0,.08);
+      background-size: 300% 300%;
+      background-repeat:no-repeat;
+      box-shadow: 0 10px 20px rgba(0,0,0,.08);
+      cursor:grab;
+      transition: transform .12s ease;
+    }
+    .tile:active{cursor:grabbing; transform: scale(.98)}
+    .tile.selected{outline:3px solid rgba(255,77,166,.45)}
+
+    /* Memory game */
+    .memory{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+      max-width:520px;
+      margin:0 auto;
+    }
+    .mcard{
+      aspect-ratio: 1/1;
+      border-radius:18px;
+      border:1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.55);
+      display:flex;align-items:center;justify-content:center;
+      font-size:28px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.08);
+      cursor:pointer;
+      transition: transform .12s ease;
+    }
+    .mcard:active{transform: scale(.98)}
+    .mcard.revealed{background: rgba(255,77,166,.12); border-color: rgba(255,77,166,.25)}
+    .mcard.matched{background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.25)}
+
+    /* Reveal page */
+    #surprise{display:none}
+    .hero{
+      padding:28px 18px;
+      border-radius: 26px;
+      background: linear-gradient(120deg, rgba(255,77,166,.18), rgba(124,58,237,.14));
+      border:1px solid rgba(255,255,255,.8);
+      box-shadow: var(--shadow);
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero h1{font-size:34px}
+    .hero h2{font-size:18px;color:var(--muted);font-weight:600;margin-top:8px}
+    .sparkle{
+      position:absolute; inset:-40px;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,.7), transparent 30%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,.6), transparent 35%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,.5), transparent 32%);
+      animation: shimmer 6s ease-in-out infinite;
+      opacity:.55;
+    }
+    @keyframes shimmer{
+      0%,100%{transform: translateY(0)}
+      50%{transform: translateY(18px)}
+    }
+    .photoBig{
+      width:100%;
+      max-height:420px;
+      object-fit:cover;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.8);
+      box-shadow: var(--shadow);
+    }
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:12px;
+    }
+    .gallery img{
+      width:100%;
+      aspect-ratio: 1/1;
+      object-fit:cover;
+      border-radius:18px;
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow: 0 10px 24px rgba(0,0,0,.10);
+      transition: transform .18s ease;
+    }
+    .gallery img:hover{transform: translateY(-2px)}
+    blockquote{
+      margin:0;
+      padding:16px 16px;
+      border-left: 5px solid rgba(255,77,166,.55);
+      background: rgba(255,255,255,.55);
+      border-radius: 14px;
+      color: #3f3f4a;
+      font-weight:600;
+    }
+    .fadeIn{animation: fade .7s ease both}
+    @keyframes fade{from{opacity:0;transform: translateY(10px)} to{opacity:1;transform:none}}
+
+    @media (max-width:520px){
+      .hero h1{font-size:28px}
+      .memory{grid-template-columns: repeat(3, 1fr)}
+    }
+  </style>
+</head>
+<body>
+  <div class="floaters" id="floaters"></div>
+
+  <div class="wrap stack">
+    <div class="card stack fadeIn" id="lock">
+      <div class="row" style="justify-content:space-between">
+        <span class="pill">🔒 Locked Surprise</span>
+        <span class="badge">Mobile-friendly • Free hosting</span>
+      </div>
+
+      <h1>Enter by unlocking 3 steps ✨</h1>
+      <p>First it looks like nothing… but if you know the answers, the surprise opens.</p>
+
+      <div class="steps">
+        <div class="step active" id="s1"><div><strong>Step 1</strong><small>Question</small></div><div class="dot"></div></div>
+        <div class="step" id="s2"><div><strong>Step 2</strong><small>Photo puzzle</small></div><div class="dot"></div></div>
+        <div class="step" id="s3"><div><strong>Step 3</strong><small>Mini game</small></div><div class="dot"></div></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="card stack" id="step1" style="background:rgba(255,255,255,.55)">
+        <h2>Step 1: Answer this 💌</h2>
+        <p class="hint">Tip: keep it something only you two know.</p>
+        <input class="input" id="answer" placeholder="Type the answer..." />
+        <div class="row" style="justify-content:space-between">
+          <span id="msg1" class="msg"></span>
+          <button class="btn" id="btn1">Check</button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="card stack" id="step2" style="display:none;background:rgba(255,255,255,.55)">
+        <h2>Step 2: Fix the photo puzzle 🧩</h2>
+        <p class="hint">Tap two tiles to swap until the image looks correct.</p>
+        <div class="puzzle" id="puzzle"></div>
+        <div class="row" style="justify-content:space-between">
+          <span id="msg2" class="msg"></span>
+          <button class="btn secondary" id="shuffle">Shuffle</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="card stack" id="step3" style="display:none;background:rgba(255,255,255,.55)">
+        <h2>Step 3: Match the pairs 🎴</h2>
+        <p class="hint">Match all pairs to unlock the surprise.</p>
+        <div class="memory" id="memory"></div>
+        <div class="row" style="justify-content:space-between">
+          <span id="msg3" class="msg"></span>
+          <button class="btn secondary" id="resetMem">Reset</button>
+        </div>
+      </div>
+
+      <div class="row" style="justify-content:flex-end">
+        <button class="btn" id="open" style="display:none">Open the Surprise 💖</button>
+      </div>
+    </div>
+
+    <!-- Surprise page -->
+    <div id="surprise" class="stack fadeIn">
+      <div class="hero">
+        <div class="sparkle"></div>
+        <div class="pill" style="justify-content:center;margin-bottom:10px">🎀 Cute • Chic • Just for you</div>
+        <h1>Happy Birthday, <span id="personName">YOUR NAME</span> 🥹💗</h1>
+        <h2 id="subtitle">You unlocked the secret page — and you deserve it all.</h2>
+      </div>
+
+      <img class="photoBig" id="mainPhoto" alt="Main photo"/>
+
+      <div class="card stack">
+        <h2>Our little story 🌷</h2>
+        <p id="longText">
+          Replace this paragraph with your long message. Write something sweet, funny, emotional — anything.
+          You can add memories, gratitude, wishes, and future plans. Keep it personal and warm.
+        </p>
+      </div>
+
+      <div class="card stack">
+        <h2>Photos 📸</h2>
+        <div class="gallery">
+          <img id="g1" alt="photo 1"/>
+          <img id="g2" alt="photo 2"/>
+          <img id="g3" alt="photo 3"/>
+          <img id="g4" alt="photo 4"/>
+        </div>
+      </div>
+
+      <div class="card stack">
+        <h2>Quotes ✨</h2>
+        <blockquote id="q1">“You make ordinary days feel like magic.”</blockquote>
+        <blockquote id="q2">“If love had a face, it would look like your smile.”</blockquote>
+        <blockquote id="q3">“I’m proud of you — always.”</blockquote>
+      </div>
+
+      <div class="card stack center" style="text-align:center">
+        <h2>That’s it… for now 😌💞</h2>
+        <p>Want to make it even cuter? Add music, more animations, or a secret final message.</p>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="confetti" style="position:fixed;inset:0;pointer-events:none"></canvas>
+
+  <script>
+    /***************
+     * Customize here
+     ***************/
+    const CONFIG = {
+      // Step 1 correct answer (case-insensitive)
+      answer: "tumi amar shanti",
+
+      // Names/text on reveal
+      personName: "Mim",
+      subtitle: "Today is yours. I’m just lucky to be part of it.",
+      longText: `Happy Birthday, Mim 💗
+I hope today wraps you in peace, laughter, and all the love you give to everyone else.
+Thank you for being you — kind, strong, beautiful, and soft in the best ways.
+I’m proud of you, and I’m always cheering for you. 💐`,
+
+      quotes: [
+        "“You make ordinary days feel like magic.”",
+        "“If love had a face, it would look like your smile.”",
+        "“I’m proud of you — always.”"
+      ],
+
+      // Images: use direct image links (or later replace with your uploaded hosted links)
+      // Tip: after you upload images to your repo, use relative paths like: "images/main.jpg"
+      mainPhoto: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1200&q=80",
+      gallery: [
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80"
+      ],
+
+      // Puzzle image (use a clear photo)
+      puzzleImage: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80",
+
+      // Memory game emojis (pairs will be created)
+      memoryIcons: ["💖","🎀","🌷","🍰","✨","🧸"]
+    };
+
+    /***************
+     * Cute floating hearts
+     ***************/
+    const floaters = document.getElementById("floaters");
+    function spawnHearts(){
+      for(let i=0;i<18;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        const left = Math.random()*100;
+        const dur = 6 + Math.random()*8;
+        const delay = Math.random()*6;
+        const size = 10 + Math.random()*14;
+        h.style.left = left + "vw";
+        h.style.bottom = (-20 - Math.random()*30) + "vh";
+        h.style.animationDuration = dur + "s";
+        h.style.animationDelay = delay + "s";
+        h.style.width = size + "px";
+        h.style.height = size + "px";
+        h.style.opacity = (0.2 + Math.random()*0.5).toFixed(2);
+        floaters.appendChild(h);
+      }
+    }
+    spawnHearts();
+
+    /***************
+     * Steps state
+     ***************/
+    const s1 = document.getElementById("s1");
+    const s2 = document.getElementById("s2");
+    const s3 = document.getElementById("s3");
+
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const step3 = document.getElementById("step3");
+
+    const msg1 = document.getElementById("msg1");
+    const msg2 = document.getElementById("msg2");
+    const msg3 = document.getElementById("msg3");
+
+    const openBtn = document.getElementById("open");
+
+    function setActive(which){
+      [s1,s2,s3].forEach(x=>x.classList.remove("active"));
+      which.classList.add("active");
+    }
+    function markDone(which){
+      which.classList.add("done");
+      which.classList.remove("active");
+    }
+
+    /***************
+     * Step 1: question
+     ***************/
+    document.getElementById("btn1").addEventListener("click", ()=>{
+      const val = (document.getElementById("answer").value || "").trim().toLowerCase();
+      if(!val){
+        msg1.textContent = "Type something 🙂";
+        msg1.className = "msg bad";
+        return;
+      }
+      if(val === CONFIG.answer.toLowerCase()){
+        msg1.textContent = "Correct! ✅";
+        msg1.className = "msg ok";
+        markDone(s1);
+        step2.style.display = "block";
+        setActive(s2);
+        step1.style.display = "none";
+      } else {
+        msg1.textContent = "Nope… try again 😼";
+        msg1.className = "msg bad";
+      }
+    });
+
+    /***************
+     * Step 2: tap-to-swap tile puzzle (3x3)
+     ***************/
+    const puzzleEl = document.getElementById("puzzle");
+    const size = 3;
+    let order = [...Array(size*size).keys()];
+    let selected = null;
+
+    function renderPuzzle(){
+      puzzleEl.innerHTML = "";
+      order.forEach((idx, pos)=>{
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        const row = Math.floor(idx/size);
+        const col = idx%size;
+
+        tile.style.backgroundImage = `url('${CONFIG.puzzleImage}')`;
+        tile.style.backgroundPosition = `${(col/(size-1))*100}% ${(row/(size-1))*100}%`;
+        tile.style.backgroundSize = `${size*100}% ${size*100}%`;
+
+        tile.addEventListener("click", ()=>{
+          if(selected === null){
+            selected = pos;
+            tile.classList.add("selected");
+          } else {
+            // swap
+            const tmp = order[selected];
+            order[selected] = order[pos];
+            order[pos] = tmp;
+            selected = null;
+            renderPuzzle();
+            checkPuzzle();
+          }
+        });
+
+        puzzleEl.appendChild(tile);
+      });
+    }
+
+    function shufflePuzzle(){
+      // make a shuffled order (ensure not already solved)
+      order = [...Array(size*size).keys()].sort(()=>Math.random()-0.5);
+      if(isSolved()) shufflePuzzle();
+      selected = null;
+      msg2.textContent = "";
+      renderPuzzle();
+    }
+    function isSolved(){
+      return order.every((v,i)=>v===i);
+    }
+    function checkPuzzle(){
+      if(isSolved()){
+        msg2.textContent = "Puzzle solved! 🧩✅";
+        msg2.className = "msg ok";
+        markDone(s2);
+        step3.style.display = "block";
+        setActive(s3);
+        step2.style.display = "none";
+        initMemory();
+      }
+    }
+
+    document.getElementById("shuffle").addEventListener("click", shufflePuzzle);
+
+    // init puzzle
+    shufflePuzzle();
+
+    /***************
+     * Step 3: memory match
+     ***************/
+    const memoryEl = document.getElementById("memory");
+    let memDeck = [];
+    let firstPick = null;
+    let lockPick = false;
+    let matchedCount = 0;
+
+    function initMemory(){
+      const icons = CONFIG.memoryIcons.slice(0,6); // 6 pairs default
+      memDeck = [...icons, ...icons].sort(()=>Math.random()-0.5);
+      matchedCount = 0;
+      firstPick = null;
+      lockPick = false;
+      msg3.textContent = "";
+      renderMemory();
+    }
+
+    function renderMemory(){
+      memoryEl.innerHTML = "";
+      memDeck.forEach((icon, i)=>{
+        const c = document.createElement("div");
+        c.className = "mcard";
+        c.dataset.index = i;
+        c.dataset.icon = icon;
+        c.textContent = "❔";
+
+        c.addEventListener("click", ()=>{
+          if(lockPick) return;
+          if(c.classList.contains("matched")) return;
+          if(c.classList.contains("revealed")) return;
+
+          c.classList.add("revealed");
+          c.textContent = icon;
+
+          if(firstPick === null){
+            firstPick = c;
+          } else {
+            // second pick
+            const secondPick = c;
+            if(firstPick.dataset.icon === secondPick.dataset.icon){
+              firstPick.classList.add("matched");
+              secondPick.classList.add("matched");
+              firstPick.classList.remove("revealed");
+              secondPick.classList.remove("revealed");
+              matchedCount += 2;
+              firstPick = null;
+
+              if(matchedCount === memDeck.length){
+                msg3.textContent = "All matched! 🎉";
+                msg3.className = "msg ok";
+                markDone(s3);
+                openBtn.style.display = "inline-block";
+                confettiBurst();
+              }
+            } else {
+              lockPick = true;
+              setTimeout(()=>{
+                firstPick.classList.remove("revealed");
+                secondPick.classList.remove("revealed");
+                firstPick.textContent = "❔";
+                secondPick.textContent = "❔";
+                firstPick = null;
+                lockPick = false;
+              }, 650);
+            }
+          }
+        });
+
+        memoryEl.appendChild(c);
+      });
+    }
+
+    document.getElementById("resetMem").addEventListener("click", initMemory);
+
+    /***************
+     * Reveal
+     ***************/
+    const surprise = document.getElementById("surprise");
+    const lock = document.getElementById("lock");
+
+    openBtn.addEventListener("click", ()=>{
+      lock.style.display = "none";
+      surprise.style.display = "grid";
+
+      // Fill content
+      document.getElementById("personName").textContent = CONFIG.personName;
+      document.getElementById("subtitle").textContent = CONFIG.subtitle;
+      document.getElementById("longText").textContent = CONFIG.longText;
+
+      document.getElementById("q1").textContent = CONFIG.quotes[0] || "";
+      document.getElementById("q2").textContent = CONFIG.quotes[1] || "";
+      document.getElementById("q3").textContent = CONFIG.quotes[2] || "";
+
+      document.getElementById("mainPhoto").src = CONFIG.mainPhoto;
+      document.getElementById("g1").src = CONFIG.gallery[0];
+      document.getElementById("g2").src = CONFIG.gallery[1];
+      document.getElementById("g3").src = CONFIG.gallery[2];
+      document.getElementById("g4").src = CONFIG.gallery[3];
+
+      confettiBurst();
+      window.scrollTo({top:0, behavior:"smooth"});
+    });
+
+    /***************
+     * Lightweight confetti (no libraries)
+     ***************/
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    let confetti = [];
+    function resize(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function confettiBurst(){
+      const n = 180;
+      for(let i=0;i<n;i++){
+        confetti.push({
+          x: Math.random()*canvas.width,
+          y: -20 - Math.random()*canvas.height*0.2,
+          r: 2 + Math.random()*4,
+          vx: -2 + Math.random()*4,
+          vy: 2 + Math.random()*5,
+          a: Math.random()*Math.PI*2,
+          va: -0.2 + Math.random()*0.4,
+          life: 80 + Math.random()*80
+        });
+      }
+      animateConfetti();
+    }
+
+    let animating = false;
+    function animateConfetti(){
+      if(animating) return;
+      animating = true;
+
+      function tick(){
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        confetti = confetti.filter(p => p.life > 0);
+
+        confetti.forEach(p=>{
+          p.x += p.vx;
+          p.y += p.vy;
+          p.a += p.va;
+          p.vy += 0.02; // gravity
+          p.life -= 1;
+
+          // pastel random-ish
+          const hue = (p.x + p.y) % 360;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.a);
+          ctx.fillStyle = `hsla(${hue}, 90%, 70%, 0.9)`;
+          ctx.fillRect(-p.r, -p.r, p.r*2, p.r*2);
+          ctx.restore();
+        });
+
+        if(confetti.length > 0){
+          requestAnimationFrame(tick);
+        } else {
+          animating = false;
+          ctx.clearRect(0,0,canvas.width, canvas.height);
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /***************
+     * Pre-fill memory at start (hidden until step 3)
+     ***************/
+    initMemory();
+  </script>
+</body>
+</html>
