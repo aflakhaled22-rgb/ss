@@ -4,20 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Unlock the Surprise ✨</title>
+  
   <style>
  :root{
       /* SKY BLUE background */
       --sky1:#bfe9ff;
       --sky2:#78d6ff;
       --sky3:#4aa9ff;
+   
+   --bg1: #bfe9ff;
+   --bg2: #78d6ff;
+   --bg3: #4aa9ff;
+
 
       .hint{
   color:#22c55e;
   font-weight:700;
 }
 
-
-      /* UI */
+   /* UI */
       --card: rgba(4, 22, 56, 0.92);
       --cardBorder: rgba(56,189,248,.35);
       --text: #eaf6ff;
@@ -35,17 +40,19 @@
 
     *{box-sizing:border-box}
     *{box-sizing:border-box}
+    
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      min-height:100vh;
-      background:
-        radial-gradient(1200px 800px at 10% 10%, var(--bg2), transparent 60%),
-        radial-gradient(1200px 800px at 90% 20%, var(--bg1), transparent 60%),
-        linear-gradient(180deg, #fff, #fff8fd);
-      overflow-x:hidden;
-    }
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  color:var(--text);
+  min-height:100vh;
+  background:
+    radial-gradient(1200px 800px at 15% 15%, var(--bg2), transparent 60%),
+    radial-gradient(1200px 800px at 85% 25%, var(--bg1), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg3));
+  overflow-x:hidden;
+}
+
     .wrap{max-width:980px;margin:0 auto;padding:18px}
     .card{
       background:var(--card);
@@ -274,19 +281,21 @@
         <span class="badge">Mobile-friendly • Free hosting</span>
       </div>
 
-      <h1>Enter by unlocking 3 steps ✨</h1>
-      <p>First it looks like nothing… but if you know the answers, the surprise opens.</p>
+      <h1> Enter by unlocking 3 steps ✨</h1>
+      <p> Let's see if you've become smart enough to crack the surprise! 😀 </p>
 
       <div class="steps">
-        <div class="step active" id="s1"><div><strong>Step 1</strong><small>Question</small></div><div class="dot"></div></div>
-        <div class="step" id="s2"><div><strong>Step 2</strong><small>Photo puzzle</small></div><div class="dot"></div></div>
-        <div class="step" id="s3"><div><strong>Step 3</strong><small>Mini game</small></div><div class="dot"></div></div>
+        <div class="step active" id="s1"><div><strong>Step 1: </strong><small>Question</small></div><div class="dot"></div></div>
+        <div class="step" id="s2"><div><strong>Step 2: </strong><small>Photo puzzle</small></div><div class="dot"></div></div>
+        <div class="step" id="s3"><div><strong>Step 3: </strong><small>Mini game</small></div><div class="dot"></div></div>
       </div>
 
       <!-- Step 1 -->
       <div class="card stack" id="step1" style="background:rgba(255,255,255,.55)">
         <h2>Step 1: Answer this 💌</h2>
-        <p class="hint">Tip: keep it something only you two know.</p>
+        <p class="hint">Not a person, not a date,
+But a place where our story began.
+Where was it? </p>
         <input class="input" id="answer" placeholder="Type the answer..." />
         <div class="row" style="justify-content:space-between">
           <span id="msg1" class="msg"></span>
@@ -372,7 +381,7 @@
      ***************/
     const CONFIG = {
       // Step 1 correct answer (case-insensitive)
-      answer: "tumi amar shanti",
+      answer: "segafredo",
 
       // Names/text on reveal
       personName: "Mim",
