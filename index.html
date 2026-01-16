@@ -330,13 +330,10 @@
     </div>
 
     <!-- Surprise page -->
-    <div id="surprise" class="stack fadeIn">
+    <d<div id="surprise" class="stack fadeIn">
       <div class="hero">
         <div class="sparkle"></div>
-     <h1 class="heroTitle">
-  Happiest Birthday,
-  <span id="personName">my love!</span> 🎉
-</h1>
+      <h1>Happiest Birthday, <span id="personName"> my love! </span> 🥹💗</h1>
         <h2 id="subtitle"> Knew you'd find the solution, the way you always do 💌 </h2>
       </div>
 
@@ -418,6 +415,20 @@ Afla
     // random speed (optional)
     const duration = 8 + Math.random() * 8; // 8s to 16s
     img.style.animationDuration = duration + "s";
+
+     const finalSection = document.querySelector('.letter-section');
+
+  if(finalSection){
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          clearInterval(stickerInterval);
+        }
+      });
+    });
+
+    observer.observe(finalSection);
+  }
 
     // random delay
     img.style.animationDelay = (Math.random() * 2) + "s";
