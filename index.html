@@ -112,31 +112,35 @@
       font-size:13px;
     }
 
-    /* Cute floating hearts */
-    .floaters{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-    .heart{
-      position:absolute;
-      width:14px;height:14px;
-      background: rgba(255,77,166,.35);
-      transform: rotate(45deg);
-      border-radius: 3px;
-      animation: rise linear infinite;
-      filter: blur(.2px);
-    }
-    .heart:before,.heart:after{
-      content:"";
-      position:absolute;
-      width:14px;height:14px;
-      background: inherit;
-      border-radius:50%;
-    }
-    .heart:before{left:-7px;top:0}
-    .heart:after{left:0;top:-7px}
-    @keyframes rise{
-      from{transform: translateY(30vh) rotate(45deg); opacity:0}
-      10%{opacity:1}
-      to{transform: translateY(-120vh) rotate(45deg); opacity:0}
-    }
+    /* Cute floating stickers */
+   /* Floating stickers */
+.floaters{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.floater{
+  position: absolute;
+  width: 80px;      /* change size here */
+  height: auto;
+  opacity: 0.9;
+  animation: floatUp 10s linear infinite;
+}
+
+@keyframes floatUp{
+  from{
+    transform: translateY(110vh) scale(0.9);
+    opacity: 0.95;
+  }
+  to{
+    transform: translateY(-20vh) scale(1.1);
+    opacity: 0;
+  }
+}
+
 
     /* Stepper */
     .steps{display:flex;gap:10px;flex-wrap:wrap}
@@ -414,32 +418,51 @@ I’m proud of you, and I’m always cheering for you. 💐`,
       puzzleImage: "puzzle.jpg",
 
       // Memory game emojis (pairs will be created)
-      memoryIcons: ["💖","🎀","🌷","🍰","✨","🧸"]
+      memoryIcons: ["🍕", "😚","🏋‍♂️","❄️","🎂","🦖","🧸"]
     };
 
     /***************
      * Cute floating hearts
      ***************/
-    const floaters = document.getElementById("floaters");
-    function spawnHearts(){
-      for(let i=0;i<18;i++){
-        const h = document.createElement("div");
-        h.className = "heart";
-        const left = Math.random()*100;
-        const dur = 6 + Math.random()*8;
-        const delay = Math.random()*6;
-        const size = 10 + Math.random()*14;
-        h.style.left = left + "vw";
-        h.style.bottom = (-20 - Math.random()*30) + "vh";
-        h.style.animationDuration = dur + "s";
-        h.style.animationDelay = delay + "s";
-        h.style.width = size + "px";
-        h.style.height = size + "px";
-        h.style.opacity = (0.2 + Math.random()*0.5).toFixed(2);
-        floaters.appendChild(h);
-      }
-    }
-    spawnHearts();
+
+  const stickerImages = [
+    "bat.png",
+    "batman.png",
+    "rspider.png",
+    "spidey.png"
+  ];
+
+  const floatersBox = document.getElementById("floaters");
+
+  function spawnSticker(){
+    const img = document.createElement("img");
+    img.src = stickerImages[Math.floor(Math.random() * stickerImages.length)];
+    img.className = "floater";
+
+    // random position
+    img.style.left = Math.random() * 100 + "vw";
+
+    // random size (optional)
+    const size = 60 + Math.random() * 50; // 60px to 110px
+    img.style.width = size + "px";
+
+    // random speed (optional)
+    const duration = 8 + Math.random() * 8; // 8s to 16s
+    img.style.animationDuration = duration + "s";
+
+    // random delay
+    img.style.animationDelay = (Math.random() * 2) + "s";
+
+    floatersBox.appendChild(img);
+
+    // remove sticker after animation ends (prevents lag)
+    setTimeout(() => img.remove(), (duration + 2) * 1000);
+  }
+
+  // create stickers continuously
+  setInterval(spawnSticker, 800); // every 0.8 second
+
+
 
     /***************
      * Steps state
