@@ -366,10 +366,21 @@
       // Names/text on reveal
       personName: "Towhidul Islam",
       subtitle: "24th it is!",
-      longText: `Happiest Birthday, My Love 💗
-I hope today wraps you in peace, laughter, and all the love you give to everyone else.
-Thank you for being you — kind, strong, beautiful, and soft in the best ways.
-I’m proud of you, and I’m always cheering for you. 💐`,
+      longText: Dear Sakib,
+
+Happiest Birthday, my love! 
+
+I have a lot to say, but again I don't. Because every time you seem to make me express everything that I don't want to. As I always say, I never intended to fall in love, not then, not now, but here I am again. You always had a way, you still do. I can never comprehend how you have become this mature as a man. But again, I hope you won't appear mature and strong all the time, even if it's breaking you. Just know, even if I say I don't want to be with you, there's no other place where I want to be other than your arms. You will always be my safe place. And for a fact I wan to be yours as well. No matter how tough life gets, I hope you'll remember that I'll always be there, cheering for you. I don't even care what other people think at this point; the only thing that I'm concerned about is how long I have to wait until I can introduce myself as your wife. Oh lord! It sounded so cliche but again, truths are always like this.
+
+However, do know I appreciate every smallest gesture that you do. Thank you so much for existing, Sakib. Thank you so much for loving me and giving me the chance to love you again. Thank you for always being the most perfect and the bestest partner. 
+
+And from the bottom of my heart, again,
+Sakib, I love you the most. More than anyone and anything 💓
+
+Best Regards,
+Your wife,
+Afla
+
 
 
       // Puzzle image (use a clear photo)
@@ -745,6 +756,22 @@ I’m proud of you, and I’m always cheering for you. 💐`,
     );
 
     observer.observe(finalSection);
+  }
+     const surprise = document.getElementById("surprise");
+
+  if (surprise) {
+    const stopStickers = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          clearInterval(window.stickerInterval);
+          const f = document.getElementById("floaters");
+          if (f) f.style.display = "none";
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    stopStickers.observe(surprise);
   }
   </script>
 </body>
