@@ -757,22 +757,7 @@ Afla
 
     observer.observe(finalSection);
   }
-     const surprise = document.getElementById("surprise");
 
-  if (surprise) {
-    const stopStickers = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          clearInterval(window.stickerInterval);
-          const f = document.getElementById("floaters");
-          if (f) f.style.display = "none";
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    stopStickers.observe(surprise);
-  }
   </script>
 </body>
 </html>
