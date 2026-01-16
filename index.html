@@ -737,21 +737,21 @@ Afla
 
     //<!-- Stop floating stickers when final section appears -->
 
-  const finalSection = document.getElementById("finalSection");
+  //const finalSection = document.getElementById("finalSection");
 
-  if (finalSection) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          clearInterval(window.stickerInterval);
-          document.getElementById("floaters").innerHTML = "";
-        }
-      },
-      { threshold: 0.3 }
-    );
+  //if (finalSection) {
+    //const observer = new IntersectionObserver(
+     // (entries) => {
+       // if (entries[0].isIntersecting) {
+         // clearInterval(window.stickerInterval);
+         // document.getElementById("floaters").innerHTML = "";
+       // }
+      //},
+     // { threshold: 0.3 }
+   // );
 
-    observer.observe(finalSection);
-  }
+   // observer.observe(finalSection);
+  //}
 
   </script>
 </body>
