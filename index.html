@@ -415,6 +415,22 @@ I’m proud of you, and I’m always cheering for you. 💐`,
     const duration = 8 + Math.random() * 8; // 8s to 16s
     img.style.animationDuration = duration + "s";
 
+  const finalSection = document.querySelector('.letter-section');
+
+  if(finalSection){
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          clearInterval(stickerInterval);
+        }
+      });
+    });
+
+    observer.observe(finalSection);
+  }
+
+
+
     // random delay
     img.style.animationDelay = (Math.random() * 2) + "s";
 
@@ -425,8 +441,7 @@ I’m proud of you, and I’m always cheering for you. 💐`,
   }
 
   // create stickers continuously
-  setInterval(spawnSticker, 800); // every 0.8 second
-
+ let stickerInterval = setInterval(spawnSticker, 800);
 
 
     /***************
