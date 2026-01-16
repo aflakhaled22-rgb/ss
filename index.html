@@ -265,9 +265,38 @@
       .hero h1{font-size:28px}
       .memory{grid-template-columns: repeat(3, 1fr)}
     }
-    
+
+    /* Floating stickers area */
+#floaters {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5; /* keeps them visible above background but below the quiz */
+}
+
+/* Each sticker */
+.floater {
+  position: absolute;
+  top: -100px;
+  animation: floatDown linear forwards;
+  will-change: transform;
+}
+
+/* Floating animation */
+@keyframes floatDown {
+  from {
+    transform: translateY(-120px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(110vh);
+    opacity: 0.9;
+  }
+}
 
   </style>
+  
 </head>
 <body>
   <div class="floaters" id="floaters"></div>
